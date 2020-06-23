@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Hello world</title>
+    <!-- Style -->
+    <link
+      href="https://cdn.jsdelivr.net/gh/fullstackreact/30-days-of-react@master/day-06/public/Clock.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- Script tags including React -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react-dom.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+
+  <body>
+    <div id="clock"></div>
+    <script type="text/babel">
+      class Clock extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = this.getTime();
+        }
+
+        componentDidMount() {
+          this.setTimer();
+        }
+
+        setTimer() {
+          clearTimeout(this.timeout);
+          this.timeout = setTimeout(this.updateClock.bind(this), 1000);
+        }
+
+        updateClock() {
+          this.setState(this.getTime, this.setTimer);
+        }
+
+        getTime() {
+          const currentTime = new Date();
+          return {
+            hours: currentTime.getHours(),
+            minutes: currentTime.getMinutes(),
+            seconds: currentTime.getSeconds(),
+            ampm: currentTime.getHours() >= 12 ? "pm" : "am",
+          };
+        }
+
+        render() {
+          const { hours, minutes, seconds, ampm } = this.state;
+          return (
+            <div className="clock">
+              {hours == 0 ? 12 : hours > 12 ? hours - 12 : hours}:
+              {minutes > 9 ? minutes : `0${minutes}`}:
+              {seconds > 9 ? seconds : `0${seconds}`}
+              {ampm}
+            </div>
+          );
+        }
+      }
+
+      var mount = document.querySelector("#clock");
+      ReactDOM.render(<Clock />, mount);
+    </script>
+  </body>
+</html>
