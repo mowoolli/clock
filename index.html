@@ -33,6 +33,12 @@
           this.setTimer();
         }
 
+        componentWillUnmount() {
+          if (this.timeout) {
+            clearTimeout(this.timeout);
+          }
+        }
+
         setTimer() {
           clearTimeout(this.timeout);
           this.timeout = setTimeout(this.updateClock.bind(this), 1000);
