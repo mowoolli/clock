@@ -51,7 +51,7 @@
       // Functional component for separator
       const Separator = ({ separator }) => <span>{separator || ":"}</span>;
       // Functional component for am/pm
-      const Ampm = ({ hours }) => <span>{hours > 12 ? "pm" : "am"}</span>;
+      const Ampm = ({ hours }) => <span>{hours >= 12 ? "pm" : "am"}</span>;
 
       // Functional component for formatter
       const Formatter = (props) => {
@@ -65,7 +65,7 @@
           } else if (e === "p") {
             return <Ampm key={idx} {...props} />;
           } else if (e === " ") {
-            return <span key={idx}></span>;
+            return <span key={idx}> </span>;
           } else {
             return <Separator key={idx} {...props} />;
           }
@@ -104,25 +104,26 @@
             hours: currentTime.getHours(),
             minutes: currentTime.getMinutes(),
             seconds: currentTime.getSeconds(),
-            ampm: currentTime.getHours() >= 12 ? "pm" : "am",
           };
         }
 
         render() {
-          const { hours, minutes, seconds, ampm } = this.state;
+          const { hours, minutes, seconds } = this.state;
           return (
             <div className="clock">
-              {hours == 0 ? 12 : hours > 12 ? hours - 12 : hours}:
-              {minutes > 9 ? minutes : `0${minutes}`}:
-              {seconds > 9 ? seconds : `0${seconds}`}
-              {ampm}
+              <Formatter
+                {...this.props}
+                hours={hours}
+                minutes={minutes}
+                seconds={seconds}
+              />
             </div>
           );
         }
       }
 
       var mount = document.querySelector("#clock");
-      ReactDOM.render(<Clock />, mount);
+      ReactDOM.render(<Clock format="h:m:s p" />, mount);
     </script>
   </body>
 </html>
